@@ -26,34 +26,82 @@ st.markdown("""
         --text-muted: #475569;
     }
     
-    /* บังคับใช้ฟอนต์ Sarabun โดยไม่ทำลายโครงสร้างเดิม */
+    /* ปรับฟอนต์หลัก */
     body, .stMarkdown, h1, h2, h3, p, label, span, div { 
         font-family: 'Sarabun', sans-serif !important; 
-        color: var(--text-main) !important;
     }
     
-    /* ปรับ Background ให้ปลอดภัยทั้งโหมดสว่างและมืด */
+    /* Sidebar - ปรับให้อ่านง่ายขึ้น */
+    section[data-testid="stSidebar"] {
+        background-color: #1e293b !important;
+        color: #ffffff !important;
+    }
+    
+    section[data-testid="stSidebar"] * {
+        color: #e2e8f0 !important;
+    }
+    
+    section[data-testid="stSidebar"] h1, 
+    section[data-testid="stSidebar"] h2, 
+    section[data-testid="stSidebar"] h3 {
+        color: #ffffff !important;
+        font-weight: 600;
+    }
+    
+    section[data-testid="stSidebar"] .stMarkdown {
+        color: #cbd5e1 !important;
+    }
+    
+    /* เมนู Selectbox และ Input ต่างๆ */
+    .stSelectbox label, .stNumberInput label, .stSlider label {
+        color: #1e293b !important;
+        font-weight: 600;
+    }
+    
+    /* ปรับสีพื้นหลังของ Input ให้ชัดเจน */
+    .stTextInput > div > div > input, 
+    .stSelectbox > div > div > select, 
+    .stNumberInput > div > div > input {
+        background-color: #ffffff !important;
+        color: #1e293b !important;
+        border: 2px solid #cbd5e1 !important;
+    }
+    
+    /* Background หลัก */
     .stApp { 
         background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%) !important; 
         min-height: 100vh; 
     }
     
-    /* แก้ไขเฉพาะ Element ที่ต้องการตกแต่ง */
     h1 { color: var(--primary) !important; font-weight: 700; }
+    h2, h3 { color: #334155 !important; font-weight: 600; }
     
     .metric-card { 
-        background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);
+        background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
         border-radius: 16px; padding: 1.5rem; 
         box-shadow: 0 4px 20px rgba(15, 118, 110, 0.08);
         border: 1px solid rgba(255,255,255,0.5); 
     }
     
-    .result-safe { background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border-left: 5px solid #10b981; }
-    .result-risk { background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 5px solid #ef4444; }
+    .result-safe { 
+        background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); 
+        border-left: 5px solid #10b981; 
+        color: #064e3b !important;
+    }
+    
+    .result-risk { 
+        background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); 
+        border-left: 5px solid #ef4444;
+        color: #7f1d1d !important;
+    }
     
     div[data-testid="stFormSubmitButton"] button {
         background: linear-gradient(90deg, #0d9488 0%, #0f766e 100%);
-        color: white !important; border-radius: 50px; font-size: 1.1rem; width: 100%;
+        color: white !important; 
+        border-radius: 50px; 
+        font-size: 1.1rem; 
+        width: 100%;
+        font-weight: 600;
     }
 </style>
 """, unsafe_allow_html=True)
