@@ -18,21 +18,42 @@ st.set_page_config(
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap');
-    :root { --primary: #0f766e; --bg: #f0fdfa; }
-    * { font-family: 'Sarabun', sans-serif !important; }
-    .stApp { background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%); min-height: 100vh; }
-    h1 { color: var(--primary); font-weight: 700; }
+    
+    :root { 
+        --primary: #0f766e; 
+        --bg-light: #f0fdfa; 
+        --text-main: #1e293b;
+        --text-muted: #475569;
+    }
+    
+    /* บังคับใช้ฟอนต์ Sarabun โดยไม่ทำลายโครงสร้างเดิม */
+    body, .stMarkdown, h1, h2, h3, p, label, span, div { 
+        font-family: 'Sarabun', sans-serif !important; 
+        color: var(--text-main) !important;
+    }
+    
+    /* ปรับ Background ให้ปลอดภัยทั้งโหมดสว่างและมืด */
+    .stApp { 
+        background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%) !important; 
+        min-height: 100vh; 
+    }
+    
+    /* แก้ไขเฉพาะ Element ที่ต้องการตกแต่ง */
+    h1 { color: var(--primary) !important; font-weight: 700; }
+    
     .metric-card { 
         background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);
         border-radius: 16px; padding: 1.5rem; 
         box-shadow: 0 4px 20px rgba(15, 118, 110, 0.08);
         border: 1px solid rgba(255,255,255,0.5); 
     }
+    
     .result-safe { background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border-left: 5px solid #10b981; }
     .result-risk { background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 5px solid #ef4444; }
+    
     div[data-testid="stFormSubmitButton"] button {
         background: linear-gradient(90deg, #0d9488 0%, #0f766e 100%);
-        color: white; border-radius: 50px; font-size: 1.1rem; width: 100%;
+        color: white !important; border-radius: 50px; font-size: 1.1rem; width: 100%;
     }
 </style>
 """, unsafe_allow_html=True)
