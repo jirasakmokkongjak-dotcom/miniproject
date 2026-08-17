@@ -194,22 +194,23 @@ def get_ckd_model():
 
 model, le_dict = get_ckd_model()
 
-# --- 🖼️ ระบบโหลดรูปผู้พัฒนา (Base64) ---
-# 👇 เปลี่ยนชื่อไฟล์ตรงนี้ถ้าคุณใช้ชื่ออื่น (เช่น my_face.png)
-img_path = "profile.jpg" 
+# =============================================
+# 🖼️ ระบบโหลดรูปผู้พัฒนา (อย่าแก้ส่วนอื่น!)
+# =============================================
+# 👇 ถ้าอยากเปลี่ยนรูป ให้แก้แค่บรรทัดนี้ (ต้องมีเครื่องหมาย " เสมอ)
+img_path = "jdk.jpg.jpg"
 
-# รูปสำรองกัน Error (ถ้าหาไฟล์ในเครื่องไม่เจอ)
-img_src = "https://cdn-icons-png.flaticon.com/512/3774/3774299.png" 
+# รูปสำรองกัน Error
+img_src = "https://cdn-icons-png.flaticon.com/512/3774/3774299.png"
 
 if os.path.exists(img_path):
     with open(img_path, "rb") as f:
         img_base64 = base64.b64encode(f.read()).decode()
-        # ตรวจสอบนามสกุลไฟล์เพื่อระบุ type ให้ถูกต้อง
         if img_path.lower().endswith('.png'):
             img_src = f"data:image/png;base64,{img_base64}"
         else:
             img_src = f"data:image/jpeg;base64,{img_base64}"
-# ----------------------------------------
+# =============================================
 
 # Sidebar Info
 with st.sidebar:
@@ -228,9 +229,9 @@ with st.sidebar:
     dev_col1, dev_col2 = st.columns([1, 1.5])
     
     with dev_col1:
-        # แสดงผลรูป (รองรับทั้งไฟล์ในเครื่องและ URL กัน Error)
+        # ⚠️ บรรทัดนี้ห้ามแก้! เก็บ {img_src} ไว้เหมือนเดิม
         st.markdown(
-            f'<img src="{jdk.jpg.jpg}" class="profile-img" width="110" style="display: block; margin-left: auto; margin-right: auto; margin-top: 10px;">', 
+            f'<img src="{img_src}" class="profile-img" width="110" style="display: block; margin-left: auto; margin-right: auto; margin-top: 10px;">', 
             unsafe_allow_html=True
         )
     
