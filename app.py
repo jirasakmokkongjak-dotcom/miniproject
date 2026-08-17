@@ -14,7 +14,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# CSS Styling
+# CSS Styling (รวมของเดิม + ของผู้พัฒนา)
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap');
@@ -103,6 +103,34 @@ st.markdown("""
         width: 100%;
         font-weight: 600;
     }
+
+    /* --- CSS สำหรับส่วนข้อมูลผู้พัฒนา --- */
+    .dev-card {
+        background: rgba(255,255,255,0.05);
+        border-radius: 12px;
+        padding: 1rem;
+        border: 1px solid rgba(255,255,255,0.1);
+        margin-top: 10px;
+    }
+    
+    .dev-info {
+        color: #cbd5e1 !important;
+        font-size: 0.95rem;
+        margin: 0.4rem 0 !important;
+        line-height: 1.5;
+    }
+    
+    .dev-info strong {
+        color: #ffffff !important;
+    }
+    
+    .profile-img {
+        border-radius: 50%;
+        border: 3px solid #14b8a6;
+        box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
+        padding: 4px;
+        background-color: #ffffff;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -181,7 +209,31 @@ with st.sidebar:
     โปรเจกต์นี้จัดทำขึ้นเพื่อการศึกษาในรายวิชา Data Science for Healthcare
     """)
     st.divider()
-    st.caption("© 2024 NephroAI Project")
+    
+    # 👇 ส่วนข้อมูลผู้พัฒนา 👇
+    st.markdown("### 👨‍⚕️ ผู้พัฒนา")
+    
+    dev_col1, dev_col2 = st.columns([1, 1.5])
+    
+    with dev_col1:
+        # 🖼️ รูปโปรไฟล์ผู้พัฒนา (ใช้ HTML img tag เพื่อไม่ให้ Error และให้ CSS ทำงาน)
+        st.markdown(
+            '<img src="jdk.jpg" class="profile-img" width="110" style="display: block; margin-left: auto; margin-right: auto; margin-top: 10px;">', 
+            unsafe_allow_html=True
+        )
+    
+    with dev_col2:
+        # ✏️ แก้ไขข้อมูลในวงเล็บ [...] ให้เป็นข้อมูลจริงของคุณ
+        st.markdown("""
+        <div class="dev-card">
+            <p class="dev-info"><strong>👤 ชื่อ:</strong> [นายจิรศักดิ์ โมกกงจักร]</p>
+            <p class="dev-info"><strong>🆔 รหัส:</strong> [664245003]</p>
+            <p class="dev-info"><strong>📚 หมู่เรียน:</strong> [66/43]</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.divider()
+    st.caption("© 2025 NephroAI Project")
 
 # 3. ฟอร์มรับข้อมูล
 with st.form("ckd_assessment_form"):
@@ -246,7 +298,7 @@ if submitted:
         if pred == 1:
             st.markdown(f"""
             <div class="metric-card result-risk">
-                <h2 style="color:#b91c1c; margin:0;">️ มีความเสี่ยงต่อโรคไตเรื้อรัง</h2>
+                <h2 style="color:#b91c1c; margin:0;">⚠️ มีความเสี่ยงต่อโรคไตเรื้อรัง</h2>
                 <p style="font-size:1.3rem; color:#7f1d1d; margin:0.5rem 0;">
                     คะแนนความเสี่ยง: <b>{risk_pct:.1f}%</b>
                 </p>
