@@ -5,6 +5,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
 import plotly.express as px
 import datetime
+import base64
+import os
 
 # 1. ตั้งค่าหน้าเว็บ
 st.set_page_config(
@@ -14,7 +16,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# CSS Styling (รวมของเดิม + ของผู้พัฒนา)
+# CSS Styling
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap');
@@ -26,12 +28,10 @@ st.markdown("""
         --text-muted: #475569;
     }
     
-    /* ปรับฟอนต์หลัก */
     body, .stMarkdown, h1, h2, h3, p, label, span, div { 
         font-family: 'Sarabun', sans-serif !important; 
     }
     
-    /* Sidebar - ปรับให้อ่านง่ายขึ้น */
     section[data-testid="stSidebar"] {
         background-color: #1e293b !important;
         color: #ffffff !important;
@@ -52,13 +52,11 @@ st.markdown("""
         color: #cbd5e1 !important;
     }
     
-    /* เมนู Selectbox และ Input ต่างๆ */
     .stSelectbox label, .stNumberInput label, .stSlider label {
         color: #1e293b !important;
         font-weight: 600;
     }
     
-    /* ปรับสีพื้นหลังของ Input ให้ชัดเจน */
     .stTextInput > div > div > input, 
     .stSelectbox > div > div > select, 
     .stNumberInput > div > div > input {
@@ -67,7 +65,6 @@ st.markdown("""
         border: 2px solid #cbd5e1 !important;
     }
     
-    /* Background หลัก */
     .stApp { 
         background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%) !important; 
         min-height: 100vh; 
@@ -104,7 +101,6 @@ st.markdown("""
         font-weight: 600;
     }
 
-    /* --- CSS สำหรับส่วนข้อมูลผู้พัฒนา --- */
     .dev-card {
         background: rgba(255,255,255,0.05);
         border-radius: 12px;
@@ -130,6 +126,7 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
         padding: 4px;
         background-color: #ffffff;
+        object-fit: cover;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -141,7 +138,7 @@ with col_title:
     st.title("NephroAI")
     st.markdown('<p style="color:#475569; font-size:1.1rem;">ระบบคัดกรองโรคไตเรื้อรัง (CKD) เพื่อการศึกษาและวิจัย</p>', unsafe_allow_html=True)
 
-# 2. โหลดและเทรนโมเดล (ใช้ Cache เพื่อไม่ให้เทรนใหม่ทุกครั้งที่กดปุ่ม)
+# 2. โหลดและเทรนโมเดล
 @st.cache_resource
 def get_ckd_model():
     np.random.seed(42)
@@ -171,7 +168,6 @@ def get_ckd_model():
     
     df = pd.DataFrame(data)
     
-    # สร้าง Target แบบมี Logic
     risk_score = (
         (df['age'] > 60).astype(int) * 0.15 +
         (df['bp'] > 140).astype(int) * 0.1 +
@@ -198,6 +194,23 @@ def get_ckd_model():
 
 model, le_dict = get_ckd_model()
 
+# --- 🖼️ ระบบโหลดรูปผู้พัฒนา (Base64) ---
+# 👇 เปลี่ยนชื่อไฟล์ตรงนี้ถ้าคุณใช้ชื่ออื่น (เช่น my_face.png)
+img_path = "profile.jpg" 
+
+# รูปสำรองกัน Error (ถ้าหาไฟล์ในเครื่องไม่เจอ)
+img_src = "https://cdn-icons-png.flaticon.com/512/3774/3774299.png" 
+
+if os.path.exists(img_path):
+    with open(img_path, "rb") as f:
+        img_base64 = base64.b64encode(f.read()).decode()
+        # ตรวจสอบนามสกุลไฟล์เพื่อระบุ type ให้ถูกต้อง
+        if img_path.lower().endswith('.png'):
+            img_src = f"data:image/png;base64,{img_base64}"
+        else:
+            img_src = f"data:image/jpeg;base64,{img_base64}"
+# ----------------------------------------
+
 # Sidebar Info
 with st.sidebar:
     st.header("📊 เกี่ยวกับโปรเจกต์")
@@ -210,15 +223,14 @@ with st.sidebar:
     """)
     st.divider()
     
-    # 👇 ส่วนข้อมูลผู้พัฒนา 👇
     st.markdown("### 👨‍⚕️ ผู้พัฒนา")
     
     dev_col1, dev_col2 = st.columns([1, 1.5])
     
     with dev_col1:
-        # 🖼️ รูปโปรไฟล์ผู้พัฒนา (ใช้ HTML img tag เพื่อไม่ให้ Error และให้ CSS ทำงาน)
+        # แสดงผลรูป (รองรับทั้งไฟล์ในเครื่องและ URL กัน Error)
         st.markdown(
-            '<img src="jdk.jpg" class="profile-img" width="110" style="display: block; margin-left: auto; margin-right: auto; margin-top: 10px;">', 
+            f'<img src="jdk.jpg" class="profile-img" width="110" style="display: block; margin-left: auto; margin-right: auto; margin-top: 10px;">', 
             unsafe_allow_html=True
         )
     
@@ -226,7 +238,7 @@ with st.sidebar:
         # ✏️ แก้ไขข้อมูลในวงเล็บ [...] ให้เป็นข้อมูลจริงของคุณ
         st.markdown("""
         <div class="dev-card">
-            <p class="dev-info"><strong>👤 ชื่อ:</strong> [นายจิรศักดิ์ โมกกงจักร]</p>
+            <p class="dev-info"><strong>👤 ชื่อ:</strong> [นาย จิรศักดิ์ โมกกงจักร]</p>
             <p class="dev-info"><strong>🆔 รหัส:</strong> [664245003]</p>
             <p class="dev-info"><strong>📚 หมู่เรียน:</strong> [66/43]</p>
         </div>
