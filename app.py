@@ -230,7 +230,7 @@ with st.sidebar:
     with dev_col1:
         # แสดงผลรูป (รองรับทั้งไฟล์ในเครื่องและ URL กัน Error)
         st.markdown(
-            f'<img src="jdk.jpg" class="profile-img" width="110" style="display: block; margin-left: auto; margin-right: auto; margin-top: 10px;">', 
+            f'<img src="{jdk.jpg}" class="profile-img" width="110" style="display: block; margin-left: auto; margin-right: auto; margin-top: 10px;">', 
             unsafe_allow_html=True
         )
     
